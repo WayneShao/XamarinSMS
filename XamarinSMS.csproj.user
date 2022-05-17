@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SelectedDevice>Genymobile vbox86p</SelectedDevice>
+    <SelectedDevice>Genymotion Xiaomi Redmi Note 7</SelectedDevice>
     <SelectedPlatformGroup>PhysicalDevice</SelectedPlatformGroup>
-    <ActiveDebugProfile>Genymobile vbox86p %28Android 10.0 - API 29%29</ActiveDebugProfile>
+    <ActiveDebugProfile>Genymotion Xiaomi Redmi Note 7 %28Android 9.0 - API 28%29</ActiveDebugProfile>
     <DefaultDevice>Pixel_XL_API_30</DefaultDevice>
     <AndroidDesignerPreferredTheme>AppTheme</AndroidDesignerPreferredTheme>
     <AndroidDesignerPreferredDevice>Nexus 4</AndroidDesignerPreferredDevice>

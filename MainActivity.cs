@@ -8,12 +8,15 @@ using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Support.V4.Content;
 using Android.Widget;
+using System.Collections.Generic;
+using Android.Content;
 
 namespace XamarinSMS
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        static readonly List<string> phoneNumbers = new List<string>();
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -24,6 +27,7 @@ namespace XamarinSMS
             var phoneNumberText = FindViewById<EditText>(Resource.Id.PhoneNumberText);
             var translatedPhoneWord = FindViewById<TextView>(Resource.Id.TranslatedPhoneword);
             var translateButton = FindViewById<Button>(Resource.Id.TranslateButton);
+            var translationHistoryButton = FindViewById<Button>(Resource.Id.TranslationHistoryButton);
 
             // Add code to translate number
             if (translateButton != null)
@@ -34,14 +38,27 @@ namespace XamarinSMS
                     var translatedNumber = PhoneWordTranslator.ToNumber(phoneNumberText.Text);
                     if (string.IsNullOrWhiteSpace(translatedNumber))
                     {
-                        if (translatedPhoneWord != null) 
+                        if (translatedPhoneWord != null)
                             translatedPhoneWord.Text = string.Empty;
                     }
                     else
                     {
-                        if (translatedPhoneWord != null) 
+                        if (translatedPhoneWord != null)
+                        {
                             translatedPhoneWord.Text = translatedNumber;
+                            phoneNumbers.Add(translatedNumber);
+                            if (translationHistoryButton != null) 
+                                translationHistoryButton.Enabled = true;
+                        }
                     }
+                };
+
+            if (translationHistoryButton != null)
+                translationHistoryButton.Click += (sender, e) =>
+                {
+                    var intent = new Intent(this, typeof(TranslationHistoryActivity));
+                    intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
+                    StartActivity(intent);
                 };
         }
 
