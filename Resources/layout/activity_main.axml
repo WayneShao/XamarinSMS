@@ -7,36 +7,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <Button
-        android:text="Button"
-        android:layout_width="160.5dp"
+        android:text="GET Read_Sms Permission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/GetPermissionBtn" />
+    <Button
+        android:text="@string/readMessageStr"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:id="@+id/button1" />
-    <TextView
-        android:text="Enter a Phoneword: "
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1" />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/PhoneNumberText"
-        android:text="1-855-XAMARIN" />
-    <Button
-        android:text="Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/TranslateButton" />
+        android:id="@+id/ReadSmsBtn" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/TranslatedPhoneword" />
-    <Button
-        android:text="@string/translationHistory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/TranslationHistoryButton"
-        android:enabled="false" />
 </LinearLayout>

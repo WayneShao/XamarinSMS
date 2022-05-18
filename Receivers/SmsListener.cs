@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Telephony;
+using Android.Widget;
 
 namespace XamarinSMS.Receivers
 {
@@ -30,7 +31,9 @@ namespace XamarinSMS.Receivers
 #pragma warning restore CS0618
                             address = sms.OriginatingAddress;
                             message = sms.MessageBody;
-                            Console.WriteLine($"{address}:{message}");
+                            Console.WriteLine($"Newly received SMS, the content is{address}:{message}");
+                            Toast.MakeText(Application.Context, $"Newly received SMS from {address}, the content is \r\n{message}", ToastLength.Long)?.Show();
+
                         }
                     }
                     catch (Exception)

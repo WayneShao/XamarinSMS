@@ -57,12 +57,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
-    <Compile Include="PhoneTranslator.cs" />
+    <Compile Include="MessagesListActivity.cs" />
+    <Compile Include="Receivers\ReadSms.cs" />
     <Compile Include="Receivers\SendSms.cs" />
     <Compile Include="Receivers\SmsListener.cs" />
+    <Compile Include="Receivers\SmsReceiver.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TranslationHistoryActivity.cs" />
+    <Compile Include="MessageItem.cs" />
+    <Compile Include="Utils\TimeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -79,8 +82,20 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs">
+      <Version>7.2.0.564</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\MessagesList.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\CustomView.axml" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
       Other similar extension points exist, see Microsoft.Common.targets.
