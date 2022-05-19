@@ -12,6 +12,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/GetPermissionBtn" />
     <Button
+        android:text="SET Default SMS APP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/SetDefaultBtn" />
+    <Button
         android:text="@string/readMessageStr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

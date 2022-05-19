@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using Android;
 using Android.App;
+using Android.App.Roles;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.V7.App;
-using Android.Runtime;
 using Android.Support.V4.Content;
 using Android.Widget;
-using System.Collections.Generic;
 using Android.Content;
-using BuiltInViews;
+using Android.Provider;
+using Android.Runtime;
 
 namespace XamarinSMS
 {
@@ -26,6 +25,7 @@ namespace XamarinSMS
 
             var getPermissionBtn = FindViewById<Button>(Resource.Id.GetPermissionBtn);
             var readSmsBtn = FindViewById<Button>(Resource.Id.ReadSmsBtn);
+            var setDefaultBtn = FindViewById<Button>(Resource.Id.SetDefaultBtn);
 
             if (getPermissionBtn != null)
                 getPermissionBtn.Click += (sender, e) =>
@@ -49,6 +49,35 @@ namespace XamarinSMS
                 {
                     var intent = new Intent(this, typeof(MessagesListActivity));
                     StartActivity(intent);
+                };
+            if (setDefaultBtn != null)
+                setDefaultBtn.Click += (sender, e) =>
+                {
+                    if (double.TryParse(Build.VERSION.Release, out var sdk) && sdk >= 10)
+                    {
+                        var roleManager = GetSystemService(RoleService) as RoleManager;
+                        if (roleManager == null)
+                        {
+
+                        }
+                        else if (roleManager.IsRoleAvailable(RoleManager.RoleSms))
+                        {
+                            int makeDefaultAppRequest = 1;
+                            var intent = roleManager.CreateRequestRoleIntent(RoleManager.RoleSms);
+                            StartActivityForResult(intent, makeDefaultAppRequest);
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        var setSmsAppIntent = new Intent(Telephony.Sms.Intents.ActionChangeDefault);
+                        setSmsAppIntent.PutExtra(Telephony.Sms.Intents.ExtraPackageName,
+                            Application.Context.PackageName);
+                        StartActivity(setSmsAppIntent);
+                    }
                 };
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
