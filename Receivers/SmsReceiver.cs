@@ -1,12 +1,15 @@
-﻿using Android.Content;
+﻿using Android.App;
+using Android.Content;
 
 namespace XamarinSMS.Receivers
 {
-    public class SmsReceiver:BroadcastReceiver
+    [BroadcastReceiver(Enabled = true, Exported = true, Permission = "android.permission.BROADCAST_SMS")]
+    [IntentFilter(new[] { "android.provider.Telephony.SMS_DELIVER" })]
+    public class SmsReceiver : BroadcastReceiver
     {
         public override void OnReceive(Context? context, Intent? intent)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }
