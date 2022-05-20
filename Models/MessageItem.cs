@@ -1,20 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using SQLite;
 
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
-namespace BuiltInViews
+namespace XamarinSMS.Models
 {
-    public class MessageItem
+    public class Message
     {
+
+        [PrimaryKey, AutoIncrement]
         public long Id { get; set; }
+        public long MsgId { get; set; }
         public string From { get; set; }
         public string Content { get; set; }
         public DateTime Time { get; set; }

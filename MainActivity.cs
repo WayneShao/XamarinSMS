@@ -19,13 +19,14 @@ namespace XamarinSMS
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
+            SetContentView(Resource.Layout.Main);
 
 
 
             var getPermissionBtn = FindViewById<Button>(Resource.Id.GetPermissionBtn);
             var readSmsBtn = FindViewById<Button>(Resource.Id.ReadSmsBtn);
             var setDefaultBtn = FindViewById<Button>(Resource.Id.SetDefaultBtn);
+            var readDeletedSmsBtn = FindViewById<Button>(Resource.Id.ReadDeletedSmsBtn);
 
             if (getPermissionBtn != null)
                 getPermissionBtn.Click += (sender, e) =>
@@ -48,6 +49,14 @@ namespace XamarinSMS
                 readSmsBtn.Click += (sender, e) =>
                 {
                     var intent = new Intent(this, typeof(MessagesListActivity));
+                    intent.PutExtra("Type", "Inbox");
+                    StartActivity(intent);
+                };
+            if (readDeletedSmsBtn != null)
+                readDeletedSmsBtn.Click += (sender, e) =>
+                {
+                    var intent = new Intent(this, typeof(MessagesListActivity));
+                    intent.PutExtra("Type", "Deleted");
                     StartActivity(intent);
                 };
             if (setDefaultBtn != null)

@@ -4,44 +4,61 @@ using Android.Views;
 using Android.Widget;
 using System;
 using System.Collections.Generic;
-using BuiltInViews;
+using XamarinSMS.Data;
+using XamarinSMS.Models;
 using XamarinSMS.Receivers;
+using Message = XamarinSMS.Models.Message;
 
 namespace XamarinSMS
 {
     [Activity(Label = "MessagesListActivity")]
     public class MessagesListActivity : Activity
     {
-        private List<MessageItem> _messages;
-        private ListView listView;
-        protected override void OnCreate(Bundle bundle)
+        private List<Message> _messages;
+        private ListView _listView;
+        private MessagesListType? Type;
+        protected override async void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            _messages = ContentResolver.GetAllSms();
             SetContentView(Resource.Layout.MessagesList);
-            listView = FindViewById<ListView>(Resource.Id.List);
+            _listView = FindViewById<ListView>(Resource.Id.List);
 
+            var type = Intent?.GetSerializableExtra("Type");
+            var typeEnum = Type = Enum.Parse(typeof(MessagesListType), type?.ToString() ?? string.Empty) as MessagesListType?;
+            switch (typeEnum)
+            {
+                case MessagesListType.Inbox:
+                    _messages = ContentResolver.GetInboxSms();
+                    break;
+                case MessagesListType.Deleted:
+                    _messages = await ContentResolver.GetDeletedSms();
+                    break;
+                default:
+                    _messages = new List<Message>();
+                    break;
+            }
 
-            if (listView == null) return;
-            listView.Adapter = new MessageAdapter(this, _messages);
-            listView.ItemClick += OnListItemClick;
-            listView.ItemLongClick += (sender, args) =>
+            if (_listView == null) return;
+            _listView.Adapter = new MessageAdapter(this, _messages);
+            _listView.ItemClick += OnListItemClick;
+            _listView.ItemLongClick += (sender, args) =>
             {
                 var message = _messages[args.Position];
 
-                Toast.MakeText(Application.Context, $"Try to delete message id:{message.Id}.", ToastLength.Short)?.Show();
-                var url = Android.Net.Uri.Parse("content://sms/" + message.Id);
+                Toast.MakeText(Application.Context, $"Try to delete message id:{message.MsgId}.", ToastLength.Short)?.Show();
+                var url = Android.Net.Uri.Parse("content://sms/" + message.MsgId);
 
                 var ret = ContentResolver!.Delete(url, null, null);
                 if (ret > 0)
                 {
-                    Toast.MakeText(Application.Context, $"Message id:{message.Id} deleted.", ToastLength.Short)?.Show();
+                    Toast.MakeText(Application.Context, $"Message id:{message.MsgId} deleted.", ToastLength.Short)?.Show();
+                    new MessageDatabase().SaveMessageAsync(_messages[args.Position]);
                     _messages.RemoveAt(args.Position);
-                    listView.Adapter = new MessageAdapter(this, _messages);
+                    _listView.Adapter = new MessageAdapter(this, _messages);
                 }
                 else
                 {
-                    Toast.MakeText(Application.Context, $"Message id:{message.Id} not deleted. \r\nPlease check if the current APP is set as the default SMS program", ToastLength.Long)?.Show();
+                    Toast.MakeText(Application.Context, $"Message id:{message.MsgId} not deleted. \r\nPlease check if the current APP is set as the default SMS program", ToastLength.Long)?.Show();
                 }
             };
         }
@@ -54,11 +71,17 @@ namespace XamarinSMS
         }
     }
 
-    public class MessageAdapter : BaseAdapter<MessageItem>
+    internal enum MessagesListType
     {
-        private List<MessageItem> _items;
-        private Activity _context;
-        public MessageAdapter(Activity context, List<MessageItem> items)
+        Inbox,
+        Deleted
+    }
+
+    public class MessageAdapter : BaseAdapter<Message>
+    {
+        private readonly List<Message> _items;
+        private readonly Activity _context;
+        public MessageAdapter(Activity context, List<Message> items)
             : base()
         {
             _context = context;
@@ -68,7 +91,7 @@ namespace XamarinSMS
         {
             return position;
         }
-        public override MessageItem this[int position] => _items[position];
+        public override Message this[int position] => _items[position];
 
         public override int Count => _items.Count;
 

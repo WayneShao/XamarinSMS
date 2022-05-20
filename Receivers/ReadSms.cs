@@ -1,16 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.Content;
-using BuiltInViews;
+using XamarinSMS.Data;
+using XamarinSMS.Models;
 using XamarinSMS.Utils;
 
 namespace XamarinSMS.Receivers
 {
     public static class ReadSms
     {
-        public static List<MessageItem> GetAllSms(this ContentResolver resolver)
+        public static async Task<List<Message>> GetDeletedSms(this ContentResolver resolver)
+        {
+            var items = new List<Message>();
+            return await new MessageDatabase().GetMessagesAsync();
+        }
+        public static List<Message> GetInboxSms(this ContentResolver resolver)
         {
 
-            var items = new List<MessageItem>();
+            var items = new List<Message>();
             const string inbox = "content://sms/inbox";
             var reqCols = new[] { "_id", "thread_id", "address", "person", "date", "body", "type" };
             var uri = Android.Net.Uri.Parse(inbox);
@@ -31,11 +38,11 @@ namespace XamarinSMS.Receivers
 
                 //_items.Add(messageId + "," + threadId + "," + address + "," + name + "," + date + " ," + msg + " ," + type);
 
-                items.Add(new MessageItem
+                items.Add(new Message
                 {
                     Content = msg,
                     Time = dateTime,
-                    Id = id,
+                    MsgId = id,
                     From = address,
                     Address = address,
                     Body = msg,
