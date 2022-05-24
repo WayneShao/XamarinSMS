@@ -28,6 +28,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ReadDeletedSmsBtn" />
+    <Button
+        android:text="Open Extern URL Adress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/OpenUrlBtn" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

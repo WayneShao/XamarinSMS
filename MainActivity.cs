@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Android;
 using Android.App;
 using Android.App.Roles;
@@ -10,6 +11,7 @@ using Android.Widget;
 using Android.Content;
 using Android.Provider;
 using Android.Runtime;
+using Xamarin.Essentials;
 
 namespace XamarinSMS
 {
@@ -27,6 +29,7 @@ namespace XamarinSMS
             var readSmsBtn = FindViewById<Button>(Resource.Id.ReadSmsBtn);
             var setDefaultBtn = FindViewById<Button>(Resource.Id.SetDefaultBtn);
             var readDeletedSmsBtn = FindViewById<Button>(Resource.Id.ReadDeletedSmsBtn);
+            var openUrlBtn = FindViewById<Button>(Resource.Id.OpenUrlBtn);
 
             if (getPermissionBtn != null)
                 getPermissionBtn.Click += (sender, e) =>
@@ -52,6 +55,7 @@ namespace XamarinSMS
                     intent.PutExtra("Type", "Inbox");
                     StartActivity(intent);
                 };
+
             if (readDeletedSmsBtn != null)
                 readDeletedSmsBtn.Click += (sender, e) =>
                 {
@@ -59,6 +63,7 @@ namespace XamarinSMS
                     intent.PutExtra("Type", "Deleted");
                     StartActivity(intent);
                 };
+            
             if (setDefaultBtn != null)
                 setDefaultBtn.Click += (sender, e) =>
                 {
@@ -88,6 +93,17 @@ namespace XamarinSMS
                         StartActivity(setSmsAppIntent);
                     }
                 };
+
+            if (openUrlBtn != null)
+                openUrlBtn.Click += async (sender, args) =>
+                {
+                    var uri = new Uri("https://www.baidu.com");
+                    await Xamarin.Essentials.Browser.OpenAsync(uri, BrowserLaunchMode.External);
+                };
+        }
+        public async Task OpenBrowser(Uri uri)
+        {
+            await Xamarin.Essentials.Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
